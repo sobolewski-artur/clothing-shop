@@ -1,61 +1,18 @@
 <script setup lang="ts">
-import { doc, getDoc } from 'firebase/firestore'
-import { ONE_SIZE, localized, toProduct, type Product } from '~/utils/products'
-import { FREE_SHIPPING_THRESHOLD, SHIPPING_COST, toCents } from '~/utils/cart'
-import { MAX_QUANTITY } from '~/composables/useCart'
+import { ONE_SIZE } from '~/utils/products'
+import { MAX_QUANTITY } from '#shared/utils/pricing'
 
 // Rendered inside <ClientOnly>: the cart only exists in the visitor's browser.
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
-const { $firestore } = useNuxtApp()
 const cart = useCart()
-
-/** Loaded products by ID; null = no longer in Firestore. */
-const products = ref<Record<string, Product | null>>({})
-const loading = ref(false)
-const loadFailed = ref(false)
-
-async function loadMissingProducts() {
-  const missing = [...new Set(cart.items.value.map(item => item.productId))]
-    .filter(id => !(id in products.value))
-  if (!missing.length) return
-
-  loading.value = true
-  loadFailed.value = false
-  try {
-    const snapshots = await Promise.all(missing.map(id => getDoc(doc($firestore, 'products', id))))
-    for (const snap of snapshots) {
-      products.value[snap.id] = snap.exists() ? toProduct(snap.id, snap.data()) : null
-    }
-  } catch {
-    loadFailed.value = true
-  } finally {
-    loading.value = false
-  }
-}
-
-watch(() => cart.items.value.map(item => item.productId).join(), loadMissingProducts, { immediate: true })
-
-const lines = computed(() => cart.items.value.map(item => {
-  const product = products.value[item.productId]
-  return {
-    ...item,
-    key: `${item.productId}:${item.size}`,
-    product,
-    name: product ? localized(product.name, locale.value) : '',
-    totalCents: product ? toCents(product.price) * item.quantity : 0
-  }
-}))
-
-const subtotalCents = computed(() => lines.value.reduce((sum, line) => sum + line.totalCents, 0))
-const shippingCents = computed(() =>
-  subtotalCents.value >= toCents(FREE_SHIPPING_THRESHOLD) ? 0 : toCents(SHIPPING_COST))
-const totalCents = computed(() => subtotalCents.value + shippingCents.value)
-const missingForFreeShipping = computed(() => toCents(FREE_SHIPPING_THRESHOLD) - subtotalCents.value)
+const {
+  lines, loading, loadFailed, isReady, hasUnavailable,
+  subtotalCents, shippingCents, totalCents, missingForFreeShipping, loadMissingProducts
+} = useCartLines()
 
 const price = (cents: number) => formatPrice(cents / 100, locale.value)
 const sizeLabel = (size: string) => (size === ONE_SIZE ? t('product.oneSize') : size)
-const isReady = computed(() => cart.items.value.every(item => item.productId in products.value))
 </script>
 
 <template>
@@ -89,7 +46,7 @@ const isReady = computed(() => cart.items.value.every(item => item.productId in 
   <div v-else class="mt-8 grid gap-10 lg:grid-cols-[1fr_20rem]">
     <ul class="divide-y divide-stone-200 border-y border-stone-200">
       <li v-for="line in lines" :key="line.key" class="flex gap-4 py-5">
-        <template v-if="line.product">
+        <template v-if="line.product && line.available">
           <NuxtLink :to="localePath(`/products/${line.productId}`)" class="shrink-0">
             <img :src="line.product.image" :alt="line.name" class="h-32 w-24 rounded-lg object-cover">
           </NuxtLink>
@@ -138,9 +95,12 @@ const isReady = computed(() => cart.items.value.every(item => item.productId in 
           </div>
         </template>
 
-        <!-- Product was removed from the shop -->
+        <!-- Product or size was removed from the shop -->
         <div v-else class="flex flex-1 items-center justify-between gap-4 text-sm">
-          <p class="text-stone-500">{{ t('cart.unavailable') }}</p>
+          <p class="text-stone-500">
+            <span v-if="line.product" class="font-medium text-stone-900">{{ line.name }} ({{ sizeLabel(line.size) }}): </span>
+            {{ t('cart.unavailable') }}
+          </p>
           <button type="button" class="underline" @click="cart.remove(line.productId, line.size)">
             {{ t('cart.remove') }}
           </button>
@@ -167,9 +127,17 @@ const isReady = computed(() => cart.items.value.every(item => item.productId in 
       <p v-if="missingForFreeShipping > 0" class="mt-4 text-sm text-stone-600">
         {{ t('cart.freeShippingHint', { amount: price(missingForFreeShipping) }) }}
       </p>
+      <p v-if="hasUnavailable" class="mt-4 text-sm text-red-700">{{ t('cart.removeUnavailable') }}</p>
+      <NuxtLink
+        v-else
+        :to="localePath('/checkout')"
+        class="mt-6 block rounded-full bg-stone-900 px-6 py-3 text-center text-sm font-semibold text-white hover:bg-stone-700"
+      >
+        {{ t('cart.checkout') }}
+      </NuxtLink>
       <NuxtLink
         :to="localePath('/products')"
-        class="mt-6 block text-center text-sm text-stone-600 underline-offset-2 hover:text-stone-900 hover:underline"
+        class="mt-4 block text-center text-sm text-stone-600 underline-offset-2 hover:text-stone-900 hover:underline"
       >
         {{ t('cart.continue') }}
       </NuxtLink>

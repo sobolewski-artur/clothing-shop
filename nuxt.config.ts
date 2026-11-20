@@ -8,6 +8,12 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   runtimeConfig: {
     public: {
+      // Shown to customers who pay by bank transfer. Set these before going live
+      // (here or with NUXT_PUBLIC_SHOP_BANK_ACCOUNT / NUXT_PUBLIC_SHOP_BANK_RECIPIENT).
+      shop: {
+        bankAccount: '',
+        bankRecipient: ''
+      },
       firebase: {
         apiKey: 'AIzaSyBJ1rNxfYJK0QsfCGKB46VUD9nGtvIhQ78',
         authDomain: 'clothing-storee.firebaseapp.com',

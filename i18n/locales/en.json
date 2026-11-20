@@ -49,7 +49,59 @@
     "free": "Free",
     "total": "Total",
     "freeShippingHint": "Add {amount} more to get free shipping.",
-    "continue": "Continue shopping"
+    "continue": "Continue shopping",
+    "checkout": "Go to checkout",
+    "removeUnavailable": "Remove unavailable products before checking out."
+  },
+  "checkout": {
+    "title": "Checkout",
+    "delivery": "Contact and delivery",
+    "optional": "optional",
+    "fields": {
+      "name": "Full name",
+      "email": "Email",
+      "phone": "Phone",
+      "street": "Street and number",
+      "postalCode": "Postal code",
+      "city": "City",
+      "notes": "Notes for the order"
+    },
+    "fieldErrors": {
+      "name": "Enter your full name.",
+      "email": "Enter a valid email address.",
+      "phone": "Enter a valid phone number (at least 9 digits).",
+      "street": "Enter your street and house number.",
+      "postalCode": "Use the format 00-000.",
+      "city": "Enter your city."
+    },
+    "payment": "Payment",
+    "methods": {
+      "transfer": "Bank transfer",
+      "transferText": "We ship your order once the payment arrives.",
+      "cod": "Cash on delivery",
+      "codText": "Pay the courier when your parcel arrives."
+    },
+    "submit": "Place order with obligation to pay",
+    "submitting": "Placing order…",
+    "backToCart": "Back to cart",
+    "errors": {
+      "invalid": "Please correct the highlighted fields.",
+      "unavailable": "Some products are no longer available. Please review your order.",
+      "price_changed": "Prices have changed. Please check the new total and try again.",
+      "generic": "Something went wrong and your order was not placed. Please try again."
+    },
+    "success": {
+      "title": "Thank you for your order!",
+      "number": "Your order number:",
+      "saveNumber": "Please save it in case you need to contact us.",
+      "transferTitle": "Bank transfer details",
+      "amount": "Amount",
+      "transferReference": "Transfer title",
+      "recipient": "Recipient",
+      "account": "Account number",
+      "accountLater": "We'll send you our bank account details to complete the payment.",
+      "codText": "You'll pay {amount} to the courier on delivery."
+    }
   },
   "footer": {
     "rights": "All rights reserved.",

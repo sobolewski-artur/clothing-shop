@@ -49,7 +49,59 @@
     "free": "Gratis",
     "total": "Razem",
     "freeShippingHint": "Dodaj produkty za {amount}, aby otrzymać darmową dostawę.",
-    "continue": "Kontynuuj zakupy"
+    "continue": "Kontynuuj zakupy",
+    "checkout": "Przejdź do kasy",
+    "removeUnavailable": "Usuń niedostępne produkty, aby przejść do kasy."
+  },
+  "checkout": {
+    "title": "Kasa",
+    "delivery": "Dane kontaktowe i dostawa",
+    "optional": "opcjonalnie",
+    "fields": {
+      "name": "Imię i nazwisko",
+      "email": "E-mail",
+      "phone": "Telefon",
+      "street": "Ulica i numer",
+      "postalCode": "Kod pocztowy",
+      "city": "Miejscowość",
+      "notes": "Uwagi do zamówienia"
+    },
+    "fieldErrors": {
+      "name": "Podaj imię i nazwisko.",
+      "email": "Podaj poprawny adres e-mail.",
+      "phone": "Podaj poprawny numer telefonu (co najmniej 9 cyfr).",
+      "street": "Podaj ulicę i numer domu.",
+      "postalCode": "Użyj formatu 00-000.",
+      "city": "Podaj miejscowość."
+    },
+    "payment": "Płatność",
+    "methods": {
+      "transfer": "Przelew tradycyjny",
+      "transferText": "Wyślemy zamówienie po zaksięgowaniu wpłaty.",
+      "cod": "Płatność przy odbiorze",
+      "codText": "Zapłacisz kurierowi przy odbiorze paczki."
+    },
+    "submit": "Zamawiam z obowiązkiem zapłaty",
+    "submitting": "Składanie zamówienia…",
+    "backToCart": "Wróć do koszyka",
+    "errors": {
+      "invalid": "Popraw zaznaczone pola.",
+      "unavailable": "Niektóre produkty nie są już dostępne. Sprawdź zamówienie.",
+      "price_changed": "Ceny uległy zmianie. Sprawdź nową kwotę i spróbuj ponownie.",
+      "generic": "Coś poszło nie tak i zamówienie nie zostało złożone. Spróbuj ponownie."
+    },
+    "success": {
+      "title": "Dziękujemy za zamówienie!",
+      "number": "Numer zamówienia:",
+      "saveNumber": "Zachowaj go na wypadek kontaktu z nami.",
+      "transferTitle": "Dane do przelewu",
+      "amount": "Kwota",
+      "transferReference": "Tytuł przelewu",
+      "recipient": "Odbiorca",
+      "account": "Numer konta",
+      "accountLater": "Prześlemy Ci numer konta, aby dokończyć płatność.",
+      "codText": "Zapłacisz {amount} kurierowi przy odbiorze."
+    }
   },
   "footer": {
     "rights": "Wszelkie prawa zastrzeżone.",

@@ -1,10 +1,10 @@
+import { MAX_QUANTITY } from '#shared/utils/pricing'
+
 export interface CartItem {
   productId: string
   size: string
   quantity: number
 }
-
-export const MAX_QUANTITY = 10
 
 /** Shopping cart shared across the app. Saved in the browser by plugins/cart.client.ts. */
 export function useCart() {
@@ -32,5 +32,9 @@ export function useCart() {
     items.value = items.value.filter(item => !(item.productId === productId && item.size === size))
   }
 
-  return { items, count, add, setQuantity, remove }
+  function clear() {
+    items.value = []
+  }
+
+  return { items, count, add, setQuantity, remove, clear }
 }

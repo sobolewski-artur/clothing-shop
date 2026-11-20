@@ -8,7 +8,7 @@ rules_version = '2';
 //
 // Collection: orders
 // Document ID: order number, e.g. "ES-261120-4F09A2" (^ES-\d{6}-[0-9A-F]{6}$)
-// Fields (see shared/orders.ts, StoredOrder):
+// Fields (see shared/types/orders.ts, StoredOrder; written by server/api/orders.post.ts):
 //   - number: string (required, immutable) - same as the document ID
 //   - createdAt: string (required, immutable, ISO 8601) - when the order was placed
 //   - status: string (required, one of new|processing|shipped|delivered|cancelled)
@@ -16,7 +16,7 @@ rules_version = '2';
 //   - locale: string (required, "pl" | "en")
 //   - customer: map (required, PII) - name, email, phone, street, postalCode,
 //       city, notes, payment
-//   - items: list<map{id, name, color, size, quantity, unitPrice, total}> (required)
+//   - items: list<map{id, name, size, quantity, unitPrice, total}> (required)
 //   - subtotal, shipping, total: number (required, >= 0)
 //   - currency: string (required, "PLN")
 //   - terms: map{version: string, acceptedAt: string} (optional)
