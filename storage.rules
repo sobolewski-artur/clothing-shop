@@ -1,22 +1,24 @@
 rules_version = '2';
 
-// Craft rules based on data in your Firestore database
-// allow write: if firestore.get(
-//    /databases/(default)/documents/users/$(request.auth.uid)).data.isAdmin;
+// ===============================================================
+// Assumed data model
+// ===============================================================
+//
+// products/{uuid}.{jpg|png|webp|avif} - product photos
+//   Uploaded only by the shop's server (POST /api/admin/uploads, admins only)
+//   through the Firebase Admin SDK, which is not subject to these rules.
+//   Each file gets a download token, and the shop shows it through its
+//   token URL (https://firebasestorage.googleapis.com/...&token=...), which
+//   also works without any read rule.
+//
+// Access pattern: no browser ever reads or writes the bucket directly, so
+// every client request is denied.
+// ===============================================================
+
 service firebase.storage {
   match /b/{bucket}/o {
-
-    // This rule allows anyone with your Storage bucket reference to view, edit,
-    // and delete all data in your Storage bucket. It is useful for getting
-    // started, but it is configured to expire after 30 days because it
-    // leaves your app open to attackers. At that time, all client
-    // requests to your Storage bucket will be denied.
-    //
-    // Make sure to write security rules for your app before that time, or else
-    // all client requests to your Storage bucket will be denied until you Update
-    // your rules
     match /{allPaths=**} {
-      allow read, write: if request.time < timestamp.date(2026, 12, 20);
+      allow read, write: if false;
     }
   }
 }

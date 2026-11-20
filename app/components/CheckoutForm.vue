@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ONE_SIZE } from '~/utils/products'
+import { ONE_SIZE } from '#shared/types/products'
 import {
   PAYMENT_METHODS,
   type CheckoutCustomer,

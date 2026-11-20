@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PRODUCT_CATEGORIES, isProductCategory } from '~/utils/products'
+import { PRODUCT_CATEGORIES, isProductCategory } from '#shared/types/products'
 
 const { t } = useI18n()
 const route = useRoute()

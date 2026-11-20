@@ -53,6 +53,97 @@
     "checkout": "Przejdź do kasy",
     "removeUnavailable": "Usuń niedostępne produkty, aby przejść do kasy."
   },
+  "admin": {
+    "title": "Panel administracyjny",
+    "loading": "Wczytywanie…",
+    "signOut": "Wyloguj",
+    "login": {
+      "title": "Logowanie do panelu",
+      "password": "Hasło",
+      "submit": "Zaloguj się",
+      "or": "lub",
+      "google": "Zaloguj się przez Google",
+      "wrongCredentials": "Nieprawidłowy e-mail lub hasło.",
+      "tooMany": "Zbyt wiele prób. Odczekaj chwilę i spróbuj ponownie.",
+      "failed": "Logowanie nie powiodło się. Spróbuj ponownie."
+    },
+    "noAccess": {
+      "title": "Brak dostępu",
+      "text": "Konto {email} nie ma uprawnień administratora."
+    },
+    "tabs": {
+      "orders": "Zamówienia",
+      "products": "Produkty"
+    },
+    "products": {
+      "count": "Produkty: {count}",
+      "new": "Nowy produkt",
+      "edit": "Edycja: {name}",
+      "editButton": "Edytuj",
+      "delete": "Usuń",
+      "confirmDelete": "Tak, usuń",
+      "cancel": "Anuluj",
+      "deleted": "Usunięto „{name}”.",
+      "deleteFailed": "Nie udało się usunąć produktu. Spróbuj ponownie.",
+      "backToList": "Wróć do listy produktów",
+      "empty": "Brak produktów.",
+      "error": "Nie udało się wczytać produktów. Spróbuj ponownie."
+    },
+    "orders": {
+      "count": "Zamówienia: {count}",
+      "refresh": "Odśwież",
+      "empty": "Brak zamówień.",
+      "error": "Nie udało się wczytać zamówień. Spróbuj ponownie.",
+      "number": "Numer",
+      "date": "Data",
+      "customer": "Klient",
+      "status": "Status",
+      "items": "Produkty",
+      "history": "Historia",
+      "email": {
+        "sent": "e-mail wysłany",
+        "failed": "e-mail nie został wysłany"
+      },
+      "changeStatus": "Zmień status",
+      "notify": "Wyślij e-mail do klienta",
+      "saveStatus": "Zapisz status",
+      "saved": "Status zapisany.",
+      "savedNotified": "Status zapisany. Klient otrzyma e-mail.",
+      "saveFailed": "Nie udało się zmienić statusu. Spróbuj ponownie."
+    },
+    "status": {
+      "new": "Nowe",
+      "processing": "W realizacji",
+      "shipped": "Wysłane",
+      "delivered": "Dostarczone",
+      "cancelled": "Anulowane"
+    },
+    "product": {
+      "name": "Nazwa",
+      "description": "Opis",
+      "price": "Cena (zł)",
+      "category": "Kategoria",
+      "sizes": "Rozmiary",
+      "photo": "Zdjęcie",
+      "upload": "Wgraj zdjęcie",
+      "uploading": "Wgrywanie…",
+      "uploadHint": "JPG, PNG, WebP lub AVIF, do 5 MB.",
+      "imageUrl": "…lub wklej link https do zdjęcia",
+      "uploadErrors": {
+        "too_large": "Zdjęcie jest większe niż 5 MB.",
+        "bad_type": "Użyj zdjęcia JPG, PNG, WebP lub AVIF.",
+        "failed": "Nie udało się wgrać zdjęcia. Spróbuj ponownie."
+      },
+      "preview": "Podgląd",
+      "submit": "Dodaj produkt",
+      "save": "Zapisz zmiany",
+      "saving": "Zapisywanie…",
+      "created": "Dodano „{name}”.",
+      "updated": "Zapisano „{name}”.",
+      "invalid": "Popraw zaznaczone pola.",
+      "failed": "Nie udało się zapisać produktu. Spróbuj ponownie."
+    }
+  },
   "checkout": {
     "title": "Kasa",
     "delivery": "Dane kontaktowe i dostawa",

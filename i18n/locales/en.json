@@ -53,6 +53,97 @@
     "checkout": "Go to checkout",
     "removeUnavailable": "Remove unavailable products before checking out."
   },
+  "admin": {
+    "title": "Admin",
+    "loading": "Loading…",
+    "signOut": "Sign out",
+    "login": {
+      "title": "Admin sign-in",
+      "password": "Password",
+      "submit": "Sign in",
+      "or": "or",
+      "google": "Sign in with Google",
+      "wrongCredentials": "Wrong email or password.",
+      "tooMany": "Too many attempts. Please wait a moment and try again.",
+      "failed": "Sign-in failed. Please try again."
+    },
+    "noAccess": {
+      "title": "No access",
+      "text": "The account {email} doesn't have admin access."
+    },
+    "tabs": {
+      "orders": "Orders",
+      "products": "Products"
+    },
+    "products": {
+      "count": "Products: {count}",
+      "new": "New product",
+      "edit": "Edit: {name}",
+      "editButton": "Edit",
+      "delete": "Delete",
+      "confirmDelete": "Yes, delete",
+      "cancel": "Cancel",
+      "deleted": "Deleted \"{name}\".",
+      "deleteFailed": "Couldn't delete the product. Please try again.",
+      "backToList": "Back to products",
+      "empty": "No products yet.",
+      "error": "Couldn't load products. Please try again."
+    },
+    "orders": {
+      "count": "Orders: {count}",
+      "refresh": "Refresh",
+      "empty": "No orders yet.",
+      "error": "Couldn't load orders. Please try again.",
+      "number": "Number",
+      "date": "Date",
+      "customer": "Customer",
+      "status": "Status",
+      "items": "Items",
+      "history": "History",
+      "email": {
+        "sent": "email sent",
+        "failed": "email failed"
+      },
+      "changeStatus": "Change status",
+      "notify": "Email the customer",
+      "saveStatus": "Save status",
+      "saved": "Status saved.",
+      "savedNotified": "Status saved. The customer will get an email.",
+      "saveFailed": "Couldn't change the status. Please try again."
+    },
+    "status": {
+      "new": "New",
+      "processing": "Processing",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    },
+    "product": {
+      "name": "Name",
+      "description": "Description",
+      "price": "Price (PLN)",
+      "category": "Category",
+      "sizes": "Sizes",
+      "photo": "Photo",
+      "upload": "Upload photo",
+      "uploading": "Uploading…",
+      "uploadHint": "JPG, PNG, WebP or AVIF, up to 5 MB.",
+      "imageUrl": "…or paste an https link to a photo",
+      "uploadErrors": {
+        "too_large": "The photo is larger than 5 MB.",
+        "bad_type": "Use a JPG, PNG, WebP or AVIF photo.",
+        "failed": "Upload failed. Please try again."
+      },
+      "preview": "Preview",
+      "submit": "Add product",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "created": "Added \"{name}\".",
+      "updated": "Saved \"{name}\".",
+      "invalid": "Please correct the highlighted fields.",
+      "failed": "Couldn't save the product. Please try again."
+    }
+  },
   "checkout": {
     "title": "Checkout",
     "delivery": "Contact and delivery",

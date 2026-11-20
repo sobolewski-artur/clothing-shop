@@ -1,4 +1,4 @@
-import type { StoredOrder } from '#shared/types/orders'
+import type { OrderStatus, StoredOrder } from '#shared/types/orders'
 
 // Email texts live here (not in i18n/locales) because emails are rendered on the server.
 const copy = {
@@ -186,4 +186,60 @@ export function renderOrderConfirmation(order: StoredOrder, bank: BankDetails) {
 </html>`
 
   return { subject: c.subject(order.number), text, html }
+}
+
+type NotifiedStatus = Exclude<OrderStatus, 'new'>
+
+const statusCopy: Record<'pl' | 'en', Record<NotifiedStatus, { subject: string, message: string }> & { greeting: (name: string) => string, number: string, footer: string, shop: string }> = {
+  pl: {
+    shop: 'Clothing Store',
+    greeting: name => `Dzień dobry ${name},`,
+    number: 'Numer zamówienia',
+    footer: 'Masz pytania? Odpowiedz na tę wiadomość i podaj numer zamówienia.',
+    processing: { subject: 'Zamówienie {n} jest w realizacji', message: 'Twoje zamówienie jest w realizacji. Damy znać, gdy zostanie wysłane.' },
+    shipped: { subject: 'Zamówienie {n} zostało wysłane', message: 'Twoje zamówienie zostało wysłane i wkrótce do Ciebie dotrze.' },
+    delivered: { subject: 'Zamówienie {n} zostało dostarczone', message: 'Twoje zamówienie zostało dostarczone. Dziękujemy za zakupy!' },
+    cancelled: { subject: 'Zamówienie {n} zostało anulowane', message: 'Twoje zamówienie zostało anulowane. Jeśli masz pytania, odpowiedz na tę wiadomość.' }
+  },
+  en: {
+    shop: 'Clothing Store',
+    greeting: name => `Hello ${name},`,
+    number: 'Order number',
+    footer: 'Questions? Just reply to this email and include your order number.',
+    processing: { subject: 'Order {n} is being prepared', message: 'Your order is being prepared. We\'ll let you know when it ships.' },
+    shipped: { subject: 'Order {n} has been shipped', message: 'Your order has been shipped and will be with you soon.' },
+    delivered: { subject: 'Order {n} has been delivered', message: 'Your order has been delivered. Thank you for shopping with us!' },
+    cancelled: { subject: 'Order {n} has been cancelled', message: 'Your order has been cancelled. If you have any questions, just reply to this email.' }
+  }
+}
+
+/** Renders a "your order status changed" email for the order's current status. */
+export function renderStatusUpdate(order: StoredOrder) {
+  if (order.status === 'new') throw new Error('No status email for "new" orders')
+  const c = statusCopy[order.locale]
+  const s = c[order.status]
+  const subject = s.subject.replace('{n}', order.number)
+  const e = escapeHtml
+
+  const text = [c.greeting(order.customer.name), '', s.message, '', `${c.number}: ${order.number}`, '', c.footer, c.shop].join('\n')
+  const html = `<!doctype html>
+<html lang="${order.locale}">
+<body style="margin:0;background:#f5f5f4;font-family:Arial,Helvetica,sans-serif;color:#1c1917;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f5f5f4;padding:24px 12px;">
+<tr><td align="center">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border-radius:12px;">
+<tr><td style="padding:32px;font-size:15px;line-height:1.5;">
+  <p style="margin:0 0 24px;font-size:20px;font-weight:bold;">${e(c.shop)}</p>
+  <p style="margin:0 0 8px;">${e(c.greeting(order.customer.name))}</p>
+  <p style="margin:0 0 20px;">${e(s.message)}</p>
+  <p style="margin:0;font-size:14px;color:#57534e;">${e(c.number)}: <strong style="color:#1c1917;font-family:Consolas,monospace;">${e(order.number)}</strong></p>
+  <p style="margin:32px 0 0;padding-top:16px;border-top:1px solid #e7e5e4;font-size:13px;color:#78716c;">${e(c.footer)}</p>
+</td></tr>
+</table>
+</td></tr>
+</table>
+</body>
+</html>`
+
+  return { subject, text, html }
 }

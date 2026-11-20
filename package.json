@@ -8,7 +8,8 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "seed:products": "node scripts/seed-products.mjs"
+    "seed:products": "node scripts/seed-products.mjs",
+    "admin:set": "node --env-file-if-exists=.env scripts/set-admin.mjs"
   },
   "dependencies": {
     "@nuxtjs/i18n": "^10.6.0",

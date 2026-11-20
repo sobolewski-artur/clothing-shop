@@ -1,5 +1,6 @@
 import { collection, getDocs, query, where } from 'firebase/firestore'
-import { toProduct, type ProductCategory } from '~/utils/products'
+import { toProduct } from '~/utils/products'
+import type { ProductCategory } from '#shared/types/products'
 
 /**
  * Loads products from Firestore, optionally filtered by category.

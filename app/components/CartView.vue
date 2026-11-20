@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ONE_SIZE } from '~/utils/products'
+import { ONE_SIZE } from '#shared/types/products'
 import { MAX_QUANTITY } from '#shared/utils/pricing'
 
 // Rendered inside <ClientOnly>: the cart only exists in the visitor's browser.

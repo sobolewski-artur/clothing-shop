@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ONE_SIZE, localized } from '~/utils/products'
+import { ONE_SIZE } from '#shared/types/products'
+import { localized } from '~/utils/products'
 
 const { t, locale } = useI18n()
 const route = useRoute()
