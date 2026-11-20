@@ -29,6 +29,8 @@ export default defineNuxtConfig({
     plugins: [tailwindcss()]
   },
   i18n: {
+    // Used for absolute SEO links (canonical, hreflang, og:url). No trailing slash.
+    baseUrl: 'https://clothing-shop--clothing-storee.europe-west4.hosted.app',
     defaultLocale: 'pl',
     strategy: 'prefix_except_default',
     locales: [
