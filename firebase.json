@@ -18,30 +18,6 @@
       ]
     }
   ],
-  "apphosting": [
-    {
-      "backendId": "clothing-store",
-      "rootDir": ".output/server",
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log",
-        "functions"
-      ]
-    },
-    {
-      "backendId": "clothing-store",
-      "rootDir": ".output",
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log",
-        "functions"
-      ]
-    }
-  ],
   "storage": {
     "rules": "storage.rules"
   },
