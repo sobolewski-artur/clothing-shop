@@ -1,0 +1,112 @@
+{
+  "brand": "Clothing Store",
+  "language": "Language",
+  "nav": {
+    "home": "Home",
+    "products": "Shop",
+    "about": "About us"
+  },
+  "shop": {
+    "title": "Shop",
+    "subtitle": "Browse our whole collection.",
+    "filterLabel": "Filter by category",
+    "all": "All",
+    "sort": {
+      "label": "Sort by",
+      "newest": "Newest",
+      "priceAsc": "Price: low to high",
+      "priceDesc": "Price: high to low"
+    },
+    "count": "{count} product | {count} products",
+    "empty": "No products here yet.",
+    "error": "We couldn't load the products. Please try again.",
+    "retry": "Try again"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "photos": "Photos: Unsplash"
+  },
+  "home": {
+    "title": "Home",
+    "hero": {
+      "eyebrow": "New collection 2026",
+      "title": "Clothes made to be worn every day",
+      "text": "Timeless cuts, honest materials and comfort you can feel. Discover pieces that fit your life.",
+      "cta": "Shop new arrivals",
+      "secondary": "Our story",
+      "alt": "Clothing racks in a store"
+    },
+    "categories": {
+      "title": "Shop by category",
+      "women": "Women",
+      "men": "Men",
+      "accessories": "Accessories",
+      "womenAlt": "Woman in a dark checked coat on a city street",
+      "menAlt": "Man buttoning a navy suit jacket",
+      "accessoriesAlt": "Beanie, sweater and jeans laid out flat"
+    },
+    "new": {
+      "title": "New arrivals",
+      "subtitle": "Fresh pieces just added to the collection."
+    },
+    "products": {
+      "poncho": "Knitted poncho",
+      "bomber": "Rust bomber jacket",
+      "tee": "Classic white T-shirt",
+      "trousers": "Powder pink trousers"
+    },
+    "promo": {
+      "eyebrow": "Limited time",
+      "title": "Comfort collection up to 30% off",
+      "text": "Soft tracksuits and loungewear in bold colours. Made for slow weekends and busy weekdays.",
+      "cta": "See the collection",
+      "alt": "Woman in a yellow tracksuit outdoors"
+    },
+    "features": {
+      "shipping": "Free shipping over 200 zł",
+      "shippingText": "Fast delivery across the country.",
+      "returns": "30-day returns",
+      "returnsText": "Changed your mind? No problem.",
+      "payment": "Secure payments",
+      "paymentText": "Card, BLIK and bank transfer."
+    }
+  },
+  "about": {
+    "title": "About us",
+    "hero": {
+      "title": "We make clothes we love to wear",
+      "text": "A small team with a big passion for good design and quality fabrics.",
+      "alt": "Inside of our clothing store"
+    },
+    "story": {
+      "title": "Our story",
+      "p1": "It started with a single clothing rack and a simple idea: everyday clothes should be comfortable, durable and look good for years, not just one season.",
+      "p2": "Today we work with trusted workshops, choose natural fabrics wherever we can and design collections that are easy to mix and match.",
+      "alt": "Neutral-toned clothes hanging on a rail"
+    },
+    "values": {
+      "title": "What we stand for",
+      "quality": "Quality first",
+      "qualityText": "We test every fabric and seam so your clothes last longer.",
+      "sustainable": "Responsible production",
+      "sustainableText": "Short runs, less waste and materials chosen with care.",
+      "local": "Close to you",
+      "localText": "Friendly support and fast shipping from our own warehouse."
+    },
+    "stats": {
+      "years": "years on the market",
+      "customers": "happy customers",
+      "products": "products in stock"
+    },
+    "gallery": {
+      "title": "Behind the scenes",
+      "alt1": "Light garments on wooden hangers",
+      "alt2": "Clothing rack with jackets and shoes",
+      "alt3": "Green shirts on wooden hangers"
+    },
+    "cta": {
+      "title": "Ready to find your new favourites?",
+      "button": "Shop now"
+    }
+  }
+}

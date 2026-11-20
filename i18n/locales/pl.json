@@ -1,0 +1,112 @@
+{
+  "brand": "Clothing Store",
+  "language": "Język",
+  "nav": {
+    "home": "Strona główna",
+    "products": "Sklep",
+    "about": "O nas"
+  },
+  "shop": {
+    "title": "Sklep",
+    "subtitle": "Przeglądaj całą naszą kolekcję.",
+    "filterLabel": "Filtruj według kategorii",
+    "all": "Wszystko",
+    "sort": {
+      "label": "Sortuj",
+      "newest": "Najnowsze",
+      "priceAsc": "Cena: od najniższej",
+      "priceDesc": "Cena: od najwyższej"
+    },
+    "count": "Liczba produktów: {count}",
+    "empty": "Nie ma tu jeszcze żadnych produktów.",
+    "error": "Nie udało się wczytać produktów. Spróbuj ponownie.",
+    "retry": "Spróbuj ponownie"
+  },
+  "footer": {
+    "rights": "Wszelkie prawa zastrzeżone.",
+    "photos": "Zdjęcia: Unsplash"
+  },
+  "home": {
+    "title": "Strona główna",
+    "hero": {
+      "eyebrow": "Nowa kolekcja 2026",
+      "title": "Ubrania stworzone do noszenia na co dzień",
+      "text": "Ponadczasowe kroje, uczciwe materiały i wygoda, którą czuć. Odkryj rzeczy dopasowane do Twojego życia.",
+      "cta": "Zobacz nowości",
+      "secondary": "Nasza historia",
+      "alt": "Wieszaki z ubraniami w sklepie"
+    },
+    "categories": {
+      "title": "Kategorie",
+      "women": "Kobiety",
+      "men": "Mężczyźni",
+      "accessories": "Akcesoria",
+      "womenAlt": "Kobieta w ciemnym płaszczu w kratę na ulicy",
+      "menAlt": "Mężczyzna zapinający granatową marynarkę",
+      "accessoriesAlt": "Czapka, sweter i dżinsy ułożone na płasko"
+    },
+    "new": {
+      "title": "Nowości",
+      "subtitle": "Świeże modele, które właśnie trafiły do kolekcji."
+    },
+    "products": {
+      "poncho": "Dzianinowe ponczo",
+      "bomber": "Rdzawa kurtka bomber",
+      "tee": "Klasyczny biały T-shirt",
+      "trousers": "Pudrowe spodnie"
+    },
+    "promo": {
+      "eyebrow": "Tylko przez chwilę",
+      "title": "Kolekcja Comfort do -30%",
+      "text": "Miękkie dresy i ubrania do domu w wyrazistych kolorach. Na leniwe weekendy i intensywne dni.",
+      "cta": "Zobacz kolekcję",
+      "alt": "Kobieta w żółtym dresie na zewnątrz"
+    },
+    "features": {
+      "shipping": "Darmowa dostawa od 200 zł",
+      "shippingText": "Szybka wysyłka w całym kraju.",
+      "returns": "30 dni na zwrot",
+      "returnsText": "Zmiana zdania? Żaden problem.",
+      "payment": "Bezpieczne płatności",
+      "paymentText": "Karta, BLIK i przelew."
+    }
+  },
+  "about": {
+    "title": "O nas",
+    "hero": {
+      "title": "Tworzymy ubrania, które sami kochamy nosić",
+      "text": "Mały zespół z wielką pasją do dobrego designu i jakościowych tkanin.",
+      "alt": "Wnętrze naszego sklepu odzieżowego"
+    },
+    "story": {
+      "title": "Nasza historia",
+      "p1": "Zaczęło się od jednego wieszaka i prostej myśli: ubrania na co dzień powinny być wygodne, trwałe i dobrze wyglądać przez lata, a nie tylko jeden sezon.",
+      "p2": "Dziś współpracujemy ze sprawdzonymi szwalniami, tam gdzie to możliwe wybieramy naturalne tkaniny i projektujemy kolekcje, które łatwo ze sobą łączyć.",
+      "alt": "Ubrania w neutralnych kolorach na wieszaku"
+    },
+    "values": {
+      "title": "Co jest dla nas ważne",
+      "quality": "Jakość przede wszystkim",
+      "qualityText": "Sprawdzamy każdą tkaninę i każdy szew, aby ubrania służyły dłużej.",
+      "sustainable": "Odpowiedzialna produkcja",
+      "sustainableText": "Krótkie serie, mniej odpadów i starannie dobrane materiały.",
+      "local": "Blisko Ciebie",
+      "localText": "Pomocna obsługa i szybka wysyłka z własnego magazynu."
+    },
+    "stats": {
+      "years": "lat na rynku",
+      "customers": "zadowolonych klientów",
+      "products": "produktów w ofercie"
+    },
+    "gallery": {
+      "title": "Za kulisami",
+      "alt1": "Jasne ubrania na drewnianych wieszakach",
+      "alt2": "Wieszak z kurtkami i butami",
+      "alt3": "Zielone koszule na drewnianych wieszakach"
+    },
+    "cta": {
+      "title": "Gotowy na nowych ulubieńców?",
+      "button": "Przejdź do sklepu"
+    }
+  }
+}
