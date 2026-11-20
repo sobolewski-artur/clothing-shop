@@ -33,7 +33,23 @@
     "notFound": "Nie znaleziono produktu"
   },
   "cart": {
-    "label": "Koszyk"
+    "label": "Koszyk",
+    "title": "Twój koszyk",
+    "empty": "Twój koszyk jest pusty.",
+    "emptyCta": "Przeglądaj produkty",
+    "quantity": "Ilość",
+    "decrease": "Zmniejsz ilość",
+    "increase": "Zwiększ ilość",
+    "remove": "Usuń",
+    "unavailable": "Ten produkt nie jest już dostępny.",
+    "error": "Nie udało się wczytać koszyka. Spróbuj ponownie.",
+    "summary": "Podsumowanie",
+    "subtotal": "Wartość produktów",
+    "shipping": "Dostawa",
+    "free": "Gratis",
+    "total": "Razem",
+    "freeShippingHint": "Dodaj produkty za {amount}, aby otrzymać darmową dostawę.",
+    "continue": "Kontynuuj zakupy"
   },
   "footer": {
     "rights": "Wszelkie prawa zastrzeżone.",

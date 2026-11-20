@@ -28,16 +28,14 @@ const isActive = (to: string) => route.path === localePath(to)
         >
           {{ $t(link.label) }}
         </NuxtLink>
-        <!-- The cart is restored from the browser, so render the count only there. -->
-        <ClientOnly>
-          <span
-            v-if="cartCount"
-            class="rounded-full bg-stone-100 px-3 py-1 text-stone-900"
-            :aria-label="$t('cart.label') + ': ' + cartCount"
-          >
-            {{ $t('cart.label') }} ({{ cartCount }})
-          </span>
-        </ClientOnly>
+        <!-- The cart is restored from the browser, so the count is rendered only there. -->
+        <NuxtLink
+          :to="localePath('/cart')"
+          class="rounded-full px-3 py-1"
+          :class="isActive('/cart') ? 'bg-stone-900 text-white' : 'bg-stone-100 text-stone-900 hover:bg-stone-200'"
+        >
+          {{ $t('cart.label') }}<ClientOnly><span v-if="cartCount"> ({{ cartCount }})</span></ClientOnly>
+        </NuxtLink>
         <LanguageSwitcher />
       </nav>
     </div>

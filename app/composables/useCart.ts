@@ -4,17 +4,33 @@ export interface CartItem {
   quantity: number
 }
 
+export const MAX_QUANTITY = 10
+
 /** Shopping cart shared across the app. Saved in the browser by plugins/cart.client.ts. */
 export function useCart() {
   const items = useState<CartItem[]>('cart', () => [])
 
   const count = computed(() => items.value.reduce((total, item) => total + item.quantity, 0))
 
+  const find = (productId: string, size: string) =>
+    items.value.find(item => item.productId === productId && item.size === size)
+
   function add(productId: string, size: string) {
-    const existing = items.value.find(item => item.productId === productId && item.size === size)
-    if (existing) existing.quantity++
+    const existing = find(productId, size)
+    if (existing) existing.quantity = Math.min(existing.quantity + 1, MAX_QUANTITY)
     else items.value.push({ productId, size, quantity: 1 })
   }
 
-  return { items, count, add }
+  function setQuantity(productId: string, size: string, quantity: number) {
+    const item = find(productId, size)
+    if (!item) return
+    if (quantity < 1) remove(productId, size)
+    else item.quantity = Math.min(quantity, MAX_QUANTITY)
+  }
+
+  function remove(productId: string, size: string) {
+    items.value = items.value.filter(item => !(item.productId === productId && item.size === size))
+  }
+
+  return { items, count, add, setQuantity, remove }
 }
