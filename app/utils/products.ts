@@ -12,8 +12,12 @@ export interface ProductDoc {
   price: number
   category: ProductCategory
   image: string
+  /** Sizes in display order, e.g. ["S", "M", "L"]. "ONE" means one size fits all. */
+  sizes: string[]
   createdAt: Timestamp
 }
+
+export const ONE_SIZE = 'ONE'
 
 /** Product as used in the app (serializable, so it can be sent from SSR to the browser). */
 export interface Product extends Omit<ProductDoc, 'createdAt'> {
@@ -34,6 +38,7 @@ export function toProduct(id: string, data: DocumentData): Product {
     price: doc.price,
     category: doc.category,
     image: doc.image,
+    sizes: Array.isArray(doc.sizes) ? doc.sizes : [],
     createdAt: doc.createdAt?.toMillis?.() ?? 0
   }
 }

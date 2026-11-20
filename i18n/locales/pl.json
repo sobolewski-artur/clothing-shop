@@ -22,6 +22,19 @@
     "error": "Nie udało się wczytać produktów. Spróbuj ponownie.",
     "retry": "Spróbuj ponownie"
   },
+  "product": {
+    "breadcrumb": "Ścieżka nawigacji",
+    "size": "Rozmiar",
+    "oneSize": "Rozmiar uniwersalny",
+    "chooseSize": "Wybierz rozmiar.",
+    "addToCart": "Dodaj do koszyka",
+    "added": "Dodano do koszyka, rozmiar {size}.",
+    "addedOneSize": "Dodano do koszyka.",
+    "notFound": "Nie znaleziono produktu"
+  },
+  "cart": {
+    "label": "Koszyk"
+  },
   "footer": {
     "rights": "Wszelkie prawa zastrzeżone.",
     "photos": "Zdjęcia: Unsplash"

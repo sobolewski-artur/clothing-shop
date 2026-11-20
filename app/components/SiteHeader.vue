@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const localePath = useLocalePath()
 const route = useRoute()
+const { count: cartCount } = useCart()
 
 const links = [
   { to: '/', label: 'nav.home' },
@@ -27,6 +28,16 @@ const isActive = (to: string) => route.path === localePath(to)
         >
           {{ $t(link.label) }}
         </NuxtLink>
+        <!-- The cart is restored from the browser, so render the count only there. -->
+        <ClientOnly>
+          <span
+            v-if="cartCount"
+            class="rounded-full bg-stone-100 px-3 py-1 text-stone-900"
+            :aria-label="$t('cart.label') + ': ' + cartCount"
+          >
+            {{ $t('cart.label') }} ({{ cartCount }})
+          </span>
+        </ClientOnly>
         <LanguageSwitcher />
       </nav>
     </div>

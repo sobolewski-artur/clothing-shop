@@ -20,6 +20,17 @@ const db = getFirestore()
 
 const image = id => `https://images.unsplash.com/photo-${id}?w=800&q=75&auto=format&fit=crop`
 
+// "ONE" = one size fits all (shown as "One size" / "Rozmiar uniwersalny").
+const SIZES = {
+  women: ['XS', 'S', 'M', 'L', 'XL'],
+  men: ['S', 'M', 'L', 'XL', 'XXL'],
+  accessories: ['ONE']
+}
+const SIZE_OVERRIDES = {
+  'knitted-poncho': ['ONE'],
+  'navy-suit-jacket': ['46', '48', '50', '52', '54']
+}
+
 const products = [
   {
     id: 'knitted-poncho',
@@ -138,7 +149,8 @@ const now = Date.now()
 products.forEach(({ id, ...data }, index) => {
   // Space creation dates a day apart so "Newest" sorting has a clear order.
   const createdAt = Timestamp.fromMillis(now - index * 24 * 60 * 60 * 1000)
-  batch.set(db.collection('products').doc(id), { ...data, createdAt })
+  const sizes = SIZE_OVERRIDES[id] ?? SIZES[data.category]
+  batch.set(db.collection('products').doc(id), { ...data, sizes, createdAt })
 })
 await batch.commit()
 

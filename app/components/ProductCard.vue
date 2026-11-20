@@ -3,12 +3,13 @@ import { localized, type Product } from '~/utils/products'
 
 const props = defineProps<{ product: Product }>()
 const { t, locale } = useI18n()
+const localePath = useLocalePath()
 
 const name = computed(() => localized(props.product.name, locale.value))
 </script>
 
 <template>
-  <article class="group">
+  <article class="group relative">
     <div class="aspect-[3/4] overflow-hidden rounded-xl bg-stone-200">
       <img
         :src="product.image"
@@ -20,7 +21,12 @@ const name = computed(() => localized(props.product.name, locale.value))
     <p class="mt-3 text-xs uppercase tracking-wide text-stone-500">
       {{ t(`home.categories.${product.category}`) }}
     </p>
-    <h3 class="mt-1 text-sm font-medium">{{ name }}</h3>
+    <h3 class="mt-1 text-sm font-medium">
+      <!-- The link covers the whole card, so image and text are both clickable. -->
+      <NuxtLink :to="localePath(`/products/${product.id}`)" class="after:absolute after:inset-0">
+        {{ name }}
+      </NuxtLink>
+    </h3>
     <p class="mt-1 text-sm text-stone-600">{{ formatPrice(product.price, locale) }}</p>
   </article>
 </template>

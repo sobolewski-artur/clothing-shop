@@ -22,6 +22,19 @@
     "error": "We couldn't load the products. Please try again.",
     "retry": "Try again"
   },
+  "product": {
+    "breadcrumb": "Breadcrumb",
+    "size": "Size",
+    "oneSize": "One size",
+    "chooseSize": "Please choose a size.",
+    "addToCart": "Add to cart",
+    "added": "Added to cart, size {size}.",
+    "addedOneSize": "Added to cart.",
+    "notFound": "Product not found"
+  },
+  "cart": {
+    "label": "Cart"
+  },
   "footer": {
     "rights": "All rights reserved.",
     "photos": "Photos: Unsplash"

@@ -41,6 +41,8 @@ rules_version = '2';
 //   - price: number (required, > 0 and < 100000) - price in PLN
 //   - category: string (required, one of women|men|accessories)
 //   - image: string (required, https URL, max 500 chars)
+//   - sizes: list<string> (required, 1-12 items, each one of XS|S|M|L|XL|XXL|
+//       ONE|44|46|48|50|52|54|56) - "ONE" means one size fits all
 //   - createdAt: timestamp (required) - used for "newest" sorting
 //   Contains NO personal or private data: everything in this collection is
 //   public catalogue content. Never add cost prices, stock suppliers or other
@@ -114,8 +116,10 @@ service cloud.firestore {
     // products. Kept so the schema is enforced if admin client writes are
     // ever allowed (call it in BOTH create and update).
     function isValidProduct(data) {
-      return data.keys().hasAll(['name', 'description', 'price', 'category', 'image', 'createdAt']) &&
-        data.keys().hasOnly(['name', 'description', 'price', 'category', 'image', 'createdAt']) &&
+      return data.keys().hasAll(['name', 'description', 'price', 'category', 'image', 'sizes', 'createdAt']) &&
+        data.keys().hasOnly(['name', 'description', 'price', 'category', 'image', 'sizes', 'createdAt']) &&
+        data.sizes is list && data.sizes.size() >= 1 && data.sizes.size() <= 12 &&
+        data.sizes.hasOnly(['XS', 'S', 'M', 'L', 'XL', 'XXL', 'ONE', '44', '46', '48', '50', '52', '54', '56']) &&
         isValidLocalizedText(data.name, 1, 120) &&
         isValidLocalizedText(data.description, 0, 2000) &&
         data.price is number && data.price > 0 && data.price < 100000 &&
