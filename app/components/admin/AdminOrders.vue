@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ONE_SIZE } from '#shared/types/products'
-import type { StoredOrder } from '#shared/types/orders'
+import { ORDER_STATUSES, type StoredOrder } from '#shared/types/orders'
 
 const props = defineProps<{ session: ReturnType<typeof useAdminSession> }>()
 const { t, locale } = useI18n()
@@ -14,7 +14,8 @@ async function load() {
   loading.value = true
   error.value = ''
   try {
-    orders.value = await props.session.adminFetch<StoredOrder[]>('/api/admin/orders')
+    // The newest 500 orders (the server's maximum); sorting below applies to these.
+    orders.value = await props.session.adminFetch<StoredOrder[]>('/api/admin/orders', { query: { limit: 500 } })
   } catch {
     error.value = t('admin.orders.error')
   } finally {
@@ -29,6 +30,50 @@ const toggle = (number: string) => { expanded.value = expanded.value === number 
 const replaceOrder = (updated: StoredOrder) => {
   orders.value = orders.value.map(order => (order.number === updated.number ? updated : order))
 }
+
+// Sorting (in the browser, over the loaded orders)
+type SortKey = 'number' | 'date' | 'customer' | 'payment' | 'status' | 'total'
+type SortDir = 'asc' | 'desc'
+const sortKey = ref<SortKey>('date')
+const sortDir = ref<SortDir>('desc')
+
+const columns: { key: SortKey, label: string, align?: 'right' }[] = [
+  { key: 'number', label: 'admin.orders.number' },
+  { key: 'date', label: 'admin.orders.date' },
+  { key: 'customer', label: 'admin.orders.customer' },
+  { key: 'payment', label: 'checkout.payment' },
+  { key: 'status', label: 'admin.orders.status' },
+  { key: 'total', label: 'cart.total', align: 'right' }
+]
+
+/** Clicking the active column flips the direction; a new column starts newest/highest first for date and total. */
+function sortBy(key: SortKey) {
+  if (sortKey.value === key) {
+    sortDir.value = sortDir.value === 'asc' ? 'desc' : 'asc'
+  } else {
+    sortKey.value = key
+    sortDir.value = key === 'date' || key === 'total' ? 'desc' : 'asc'
+  }
+}
+
+const compareText = (a: string, b: string) => a.localeCompare(b, locale.value, { sensitivity: 'base' })
+const comparators: Record<SortKey, (a: StoredOrder, b: StoredOrder) => number> = {
+  number: (a, b) => a.number.localeCompare(b.number),
+  date: (a, b) => a.createdAt.localeCompare(b.createdAt), // ISO strings sort chronologically
+  customer: (a, b) => compareText(a.customer.name, b.customer.name),
+  payment: (a, b) => compareText(t(`checkout.methods.${a.customer.payment}`), t(`checkout.methods.${b.customer.payment}`)),
+  status: (a, b) => ORDER_STATUSES.indexOf(a.status) - ORDER_STATUSES.indexOf(b.status), // workflow order: new → cancelled
+  total: (a, b) => a.total - b.total
+}
+
+const sortedOrders = computed(() => {
+  const direction = sortDir.value === 'asc' ? 1 : -1
+  const compare = comparators[sortKey.value]
+  // Ties are broken by date, newest first, so the order is always predictable.
+  return [...orders.value].sort((a, b) => compare(a, b) * direction || comparators.date(b, a))
+})
+
+const ariaSort = (key: SortKey) => (sortKey.value === key ? (sortDir.value === 'asc' ? 'ascending' : 'descending') : 'none')
 
 const statusClass: Record<string, string> = {
   new: 'bg-amber-100 text-amber-900',
@@ -60,16 +105,31 @@ const statusClass: Record<string, string> = {
       <table class="w-full min-w-[720px] text-left text-sm">
         <thead class="bg-stone-50 text-stone-500">
           <tr>
-            <th class="px-4 py-3 font-medium">{{ t('admin.orders.number') }}</th>
-            <th class="px-4 py-3 font-medium">{{ t('admin.orders.date') }}</th>
-            <th class="px-4 py-3 font-medium">{{ t('admin.orders.customer') }}</th>
-            <th class="px-4 py-3 font-medium">{{ t('checkout.payment') }}</th>
-            <th class="px-4 py-3 font-medium">{{ t('admin.orders.status') }}</th>
-            <th class="px-4 py-3 text-right font-medium">{{ t('cart.total') }}</th>
+            <th
+              v-for="column in columns"
+              :key="column.key"
+              scope="col"
+              :aria-sort="ariaSort(column.key)"
+              class="px-2 py-1.5 font-medium"
+              :class="column.align === 'right' ? 'text-right' : ''"
+            >
+              <button
+                type="button"
+                class="inline-flex items-center gap-1 rounded px-2 py-1.5 hover:bg-stone-200/60 hover:text-stone-900"
+                :class="[sortKey === column.key ? 'text-stone-900' : '', column.align === 'right' ? 'flex-row-reverse' : '']"
+                :title="t('admin.orders.sortBy', { column: t(column.label) })"
+                @click="sortBy(column.key)"
+              >
+                {{ t(column.label) }}
+                <span aria-hidden="true" class="w-3 text-xs" :class="sortKey === column.key ? '' : 'opacity-0'">
+                  {{ sortKey === column.key && sortDir === 'asc' ? '▲' : '▼' }}
+                </span>
+              </button>
+            </th>
           </tr>
         </thead>
         <tbody>
-          <template v-for="order in orders" :key="order.number">
+          <template v-for="order in sortedOrders" :key="order.number">
             <tr
               class="cursor-pointer border-t border-stone-200 hover:bg-stone-50"
               :aria-expanded="expanded === order.number"

@@ -104,6 +104,7 @@
         "sent": "email sent",
         "failed": "email failed"
       },
+      "sortBy": "Sort by {column}",
       "changeStatus": "Change status",
       "notify": "Email the customer",
       "saveStatus": "Save status",

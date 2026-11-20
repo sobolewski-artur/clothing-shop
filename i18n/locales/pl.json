@@ -104,6 +104,7 @@
         "sent": "e-mail wysłany",
         "failed": "e-mail nie został wysłany"
       },
+      "sortBy": "Sortuj według: {column}",
       "changeStatus": "Zmień status",
       "notify": "Wyślij e-mail do klienta",
       "saveStatus": "Zapisz status",
