@@ -167,6 +167,12 @@
       "city": "Enter your city.",
       "acceptedTerms": "Please accept the terms to continue."
     },
+    "captcha": {
+      "required": "Please wait for the security check below to finish, then try again.",
+      "failed": "The security check failed. Please complete it again and resubmit.",
+      "unavailable": "The security check is temporarily unavailable. Please try again in a moment.",
+      "loadFailed": "Couldn't load the security check. Disable content blockers for this site or refresh the page."
+    },
     "terms": {
       "before": "I accept the",
       "link": "terms and conditions",

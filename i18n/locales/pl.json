@@ -167,6 +167,12 @@
       "city": "Podaj miejscowość.",
       "acceptedTerms": "Zaakceptuj regulamin, aby kontynuować."
     },
+    "captcha": {
+      "required": "Poczekaj, aż zakończy się weryfikacja zabezpieczająca poniżej, i spróbuj ponownie.",
+      "failed": "Weryfikacja zabezpieczająca nie powiodła się. Wykonaj ją ponownie i wyślij zamówienie.",
+      "unavailable": "Weryfikacja zabezpieczająca jest chwilowo niedostępna. Spróbuj ponownie za chwilę.",
+      "loadFailed": "Nie udało się wczytać weryfikacji zabezpieczającej. Wyłącz blokery treści dla tej strony lub odśwież stronę."
+    },
     "terms": {
       "before": "Akceptuję",
       "link": "regulamin",

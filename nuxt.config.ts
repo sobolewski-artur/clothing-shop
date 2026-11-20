@@ -7,7 +7,16 @@ export default defineNuxtConfig({
   modules: ['@nuxtjs/i18n'],
   css: ['~/assets/css/main.css'],
   runtimeConfig: {
+    // Server-only. Set with NUXT_TURNSTILE_SECRET_KEY (.env locally; App Hosting
+    // secret "turnstile-secret-key" in production, see apphosting.yaml). Never commit it.
+    turnstile: {
+      secretKey: ''
+    },
     public: {
+      // Cloudflare Turnstile widget on the checkout form (the site key is public).
+      turnstile: {
+        siteKey: '0x4AAAAAAGJNoZEB6IgK_puR'
+      },
       // Shown to customers who pay by bank transfer. Set these before going live
       // (here or with NUXT_PUBLIC_SHOP_BANK_ACCOUNT / NUXT_PUBLIC_SHOP_BANK_RECIPIENT).
       shop: {

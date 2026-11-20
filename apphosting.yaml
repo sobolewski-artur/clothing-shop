@@ -1,0 +1,12 @@
+# Firebase App Hosting settings for backend "clothing-shop" (deployed from GitHub).
+# https://firebase.google.com/docs/app-hosting/configure
+
+env:
+  # Cloudflare Turnstile secret key, used by POST /api/orders to verify the
+  # checkout captcha. The value lives in Cloud Secret Manager, never in git:
+  #   pnpm dlx firebase-tools@latest apphosting:secrets:set turnstile-secret-key
+  #   pnpm dlx firebase-tools@latest apphosting:secrets:grantaccess turnstile-secret-key --backend clothing-shop
+  - variable: NUXT_TURNSTILE_SECRET_KEY
+    secret: turnstile-secret-key
+    availability:
+      - RUNTIME

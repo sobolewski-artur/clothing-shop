@@ -8,6 +8,7 @@ const checkoutSchema = z.object({
   website: z.string().max(0).optional(),
   expectedTotal: z.number().nonnegative(),
   acceptedTerms: z.literal(true),
+  turnstileToken: z.string().min(1).max(2048),
   customer: z.object({
     name: z.string().trim().min(2).max(100),
     email: z.string().trim().pipe(z.email().max(200)),
@@ -45,7 +46,10 @@ export default defineEventHandler(async (event): Promise<CheckoutResponse> => {
       String(issue.path[0] === 'customer' ? issue.path[1] : issue.path[0])))]
     throw createError({ statusCode: 400, statusMessage: 'Invalid order', data: { code: 'invalid', fields } })
   }
-  const { locale, customer, items, expectedTotal } = parsed.data
+  const { locale, customer, items, expectedTotal, turnstileToken } = parsed.data
+
+  // Bot check first, before any database work.
+  await verifyTurnstile(event, turnstileToken, 'checkout')
 
   // Merge duplicate lines (same product and size).
   const merged = new Map<string, { productId: string, size: string, quantity: number }>()

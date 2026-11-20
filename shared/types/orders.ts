@@ -36,6 +36,8 @@ export interface CheckoutRequest {
   expectedTotal: number
   /** The customer ticked "I accept the terms" (must be true). */
   acceptedTerms: boolean
+  /** Cloudflare Turnstile token from the checkout widget (single-use). */
+  turnstileToken: string
   /** Honeypot field: real visitors never fill it in. */
   website?: string
 }
@@ -48,7 +50,7 @@ export interface CheckoutResponse {
 }
 
 /** Error codes returned by POST /api/orders (in `data.code`). */
-export type CheckoutErrorCode = 'invalid' | 'unavailable' | 'price_changed'
+export type CheckoutErrorCode = 'invalid' | 'unavailable' | 'price_changed' | 'captcha' | 'captcha_unavailable'
 
 export interface StoredOrderItem {
   id: string

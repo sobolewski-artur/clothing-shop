@@ -26,6 +26,7 @@ Live site: https://clothing-shop--clothing-storee.europe-west4.hosted.app
 | Emails | Cloud Function `sendQueuedMail` + Nodemailer + Brevo SMTP |
 | Hosting | Firebase App Hosting, connected to this GitHub repository |
 | Validation | [Zod](https://zod.dev) on every server route |
+| Bot protection | [Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/) on the checkout form |
 
 Firebase project: `clothing-storee` (Firestore and functions in `europe-west4`).
 
@@ -44,11 +45,14 @@ Anything that runs on the server with admin rights (checkout, admin panel, scrip
 
 1. Firebase console → Project settings → Service accounts → **Generate new private key**.
 2. Save the file in the project root. Files named `service-account*.json` or `*-firebase-adminsdk-*.json` are git-ignored. **Never commit it**: it has full admin access to the project.
-3. Create `.env` in the project root (git-ignored) pointing to it:
+3. Create `.env` in the project root (git-ignored) pointing to it, plus the Turnstile secret key (Cloudflare dashboard → Turnstile → your widget):
 
    ```bash
    GOOGLE_APPLICATION_CREDENTIALS=./your-key-file.json
+   NUXT_TURNSTILE_SECRET_KEY=your-turnstile-secret-key
    ```
+
+   Without the Turnstile secret, checkout refuses every order.
 
 `pnpm dev` loads `.env` automatically. On App Hosting no key is needed: credentials are provided automatically.
 
@@ -97,9 +101,10 @@ The exact fields are documented at the top of [`firestore.rules`](firestore.rule
 ### Placing an order
 
 1. The cart lives in `localStorage` in the visitor's browser.
-2. Checkout sends the cart and form to `POST /api/orders`.
-3. The server validates the input, loads current prices and sizes from Firestore, and rejects the order if a product is gone or the total differs from what the customer saw.
-4. The order and its confirmation email (a `mail/` document) are written in one batch, so one never exists without the other.
+2. Checkout sends the cart, the form and a Cloudflare Turnstile token to `POST /api/orders`.
+3. The server checks the Turnstile token with Cloudflare, so bots are rejected before any database work.
+4. It then validates the input, loads current prices and sizes from Firestore, and rejects the order if a product is gone or the total differs from what the customer saw.
+5. The order and its confirmation email (a `mail/` document) are written in one batch, so one never exists without the other.
 
 ### Emails
 
@@ -139,6 +144,7 @@ In [`nuxt.config.ts`](nuxt.config.ts) → `runtimeConfig.public`:
 | Setting | Purpose |
 |---|---|
 | `firebase.*` | Firebase web config (public) |
+| `turnstile.siteKey` | Cloudflare Turnstile site key (public). The secret key is server-only: `NUXT_TURNSTILE_SECRET_KEY`. |
 | `shop.bankAccount`, `shop.bankRecipient` | Bank details shown to customers who pay by transfer, on the confirmation page and in the email. **Empty for now.** Can also be set with `NUXT_PUBLIC_SHOP_BANK_ACCOUNT` / `NUXT_PUBLIC_SHOP_BANK_RECIPIENT`. |
 
 Shipping cost, free-shipping threshold and maximum quantity are in [`shared/utils/pricing.ts`](shared/utils/pricing.ts).
@@ -154,6 +160,7 @@ The site's address is set in `i18n.baseUrl` in `nuxt.config.ts` and used for SEO
 | Firestore rules and indexes | `pnpm dlx firebase-tools@latest deploy --only firestore` |
 | Storage rules | `pnpm dlx firebase-tools@latest deploy --only storage` |
 | Change the SMTP password | `pnpm dlx firebase-tools@latest functions:secrets:set SMTP_PASSWORD`, then redeploy the email function |
+| Turnstile secret on App Hosting | `pnpm dlx firebase-tools@latest apphosting:secrets:set turnstile-secret-key`, then `apphosting:secrets:grantaccess turnstile-secret-key --backend clothing-shop`. [`apphosting.yaml`](apphosting.yaml) passes it to the app as `NUXT_TURNSTILE_SECRET_KEY`. |
 
 `firebase.json` has no `apphosting` section on purpose: the backend deploys from GitHub. A plain `firebase deploy` therefore leaves the website alone.
 
@@ -162,5 +169,5 @@ The site's address is set in `i18n.baseUrl` in `nuxt.config.ts` and used for SEO
 - Bank account details for transfer payments (see Configuration).
 - Real terms and privacy policy. The current [`/terms`](app/pages/terms.vue) page only says this is a development app whose orders are not fulfilled.
 - Online card payments (e.g. Przelewy24 or Stripe). Only transfer and cash on delivery for now.
-- Rate limiting on `POST /api/orders` (only a honeypot field against bots).
+- Rate limiting on `POST /api/orders`. Bots are stopped by Turnstile and a honeypot field, but a person can still send many orders.
 - The admin orders list loads the newest 500 orders; beyond that it would need server-side paging.

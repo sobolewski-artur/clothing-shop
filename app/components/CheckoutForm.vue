@@ -32,6 +32,8 @@ const form = reactive<CheckoutCustomer>({
 })
 const website = ref('') // honeypot, hidden from real visitors
 const acceptedTerms = ref(false)
+const turnstileToken = ref('')
+const turnstile = ref<{ reset: () => void }>()
 
 const fields: { name: Field, type: string, autocomplete: string, pattern?: string, half?: boolean }[] = [
   { name: 'name', type: 'text', autocomplete: 'name' },
@@ -52,9 +54,14 @@ const hasError = (field: string) => fieldErrors.value.includes(field)
 
 async function submit() {
   if (submitting.value || hasUnavailable.value) return
-  submitting.value = true
   fieldErrors.value = []
   formError.value = ''
+  if (!turnstileToken.value) {
+    fieldErrors.value = ['turnstileToken']
+    formError.value = t('checkout.captcha.required')
+    return
+  }
+  submitting.value = true
 
   const body: CheckoutRequest = {
     locale: locale.value as CheckoutRequest['locale'],
@@ -62,6 +69,7 @@ async function submit() {
     items: cart.items.value.map(({ productId, size, quantity }) => ({ productId, size, quantity })),
     expectedTotal: totalCents.value / 100,
     acceptedTerms: acceptedTerms.value,
+    turnstileToken: turnstileToken.value,
     website: website.value
   }
 
@@ -71,10 +79,15 @@ async function submit() {
     cart.clear()
     await navigateTo(localePath({ path: '/checkout/success', query: { number: order.number } }))
   } catch (error) {
+    // Turnstile tokens are single-use: get a fresh one for the next attempt.
+    turnstile.value?.reset()
     // $fetch puts the response body in error.data; our server details are in its `data`.
     const data = (error as { data?: { data?: { code?: string, fields?: string[] } } }).data?.data
     const code = data?.code as CheckoutErrorCode | undefined
-    if (code === 'invalid') {
+    if (code === 'captcha' || code === 'captcha_unavailable') {
+      fieldErrors.value = ['turnstileToken']
+      formError.value = t(`checkout.captcha.${code === 'captcha' ? 'failed' : 'unavailable'}`)
+    } else if (code === 'invalid') {
       fieldErrors.value = data?.fields ?? []
       formError.value = t('checkout.errors.invalid')
     } else if (code === 'unavailable' || code === 'price_changed') {
@@ -243,6 +256,11 @@ async function submit() {
       <p v-if="hasError('acceptedTerms')" id="checkout-terms-error" class="mt-1 text-sm text-red-700">
         {{ t('checkout.fieldErrors.acceptedTerms') }}
       </p>
+
+      <!-- Cloudflare Turnstile bot check -->
+      <div class="mt-4 rounded-xl" :class="hasError('turnstileToken') ? 'ring-2 ring-red-600 ring-offset-2' : ''">
+        <TurnstileWidget ref="turnstile" v-model="turnstileToken" action="checkout" />
+      </div>
 
       <button
         type="submit"
