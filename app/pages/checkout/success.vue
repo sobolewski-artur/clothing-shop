@@ -33,6 +33,7 @@ const order = computed(() => (lastOrder.value?.number === number.value ? lastOrd
       <strong class="font-mono text-stone-900">{{ number }}</strong>
     </p>
     <p class="mt-2 text-stone-600">{{ t('checkout.success.saveNumber') }}</p>
+    <p v-if="number" class="mt-1 text-stone-600">{{ t('checkout.success.emailSent') }}</p>
 
     <!-- Bank transfer details -->
     <section v-if="order?.payment === 'transfer'" class="mt-10 rounded-2xl bg-stone-50 p-6 text-left">

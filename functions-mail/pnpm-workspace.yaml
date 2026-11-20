@@ -1,0 +1,6 @@
+# Separate pnpm project for the Cloud Functions (deployed on their own).
+allowBuilds:
+  # Not needed: auto-config for the Firebase browser SDK.
+  '@firebase/util': false
+  # Not needed: only a version check.
+  protobufjs: false

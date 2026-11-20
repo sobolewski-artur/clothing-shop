@@ -104,12 +104,17 @@ export default defineEventHandler(async (event): Promise<CheckoutResponse> => {
     currency: 'PLN'
   }
 
+  // The order and its confirmation email are written together: both or neither.
   // create() fails if the number is taken, so a collision can never overwrite an order.
   for (let attempt = 0; attempt < 3; attempt++) {
     const number = newOrderNumber(now)
+    const order: StoredOrder = { number, ...baseOrder }
     try {
-      await db.collection('orders').doc(number).create({ number, ...baseOrder } satisfies StoredOrder)
-      return { number, total: baseOrder.total, payment: customer.payment }
+      await db.batch()
+        .create(db.collection('orders').doc(number), order)
+        .create(newMailRef(db), orderConfirmationMail(order))
+        .commit()
+      return { number, total: order.total, payment: customer.payment }
     } catch (error) {
       if ((error as { code?: number }).code !== 6) throw error // 6 = ALREADY_EXISTS
     }

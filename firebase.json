@@ -7,26 +7,21 @@
   },
   "functions": [
     {
-      "source": "functions",
-      "codebase": "default",
-      "disallowLegacyRuntimeConfig": true,
+      "source": "functions-mail",
+      "codebase": "mail",
       "ignore": [
         "node_modules",
         ".git",
+        ".env.example",
         "firebase-debug.log",
-        "firebase-debug.*.log",
-        "*.local"
-      ],
-      "predeploy": [
-        "npm --prefix \"$RESOURCE_DIR\" run lint",
-        "npm --prefix \"$RESOURCE_DIR\" run build"
+        "firebase-debug.*.log"
       ]
     }
   ],
   "apphosting": [
     {
       "backendId": "clothing-store",
-      "rootDir": ".output",
+      "rootDir": ".output/server",
       "ignore": [
         "node_modules",
         ".git",

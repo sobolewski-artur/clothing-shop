@@ -94,6 +94,7 @@
       "title": "Thank you for your order!",
       "number": "Your order number:",
       "saveNumber": "Please save it in case you need to contact us.",
+      "emailSent": "You'll receive an order confirmation by email shortly.",
       "transferTitle": "Bank transfer details",
       "amount": "Amount",
       "transferReference": "Transfer title",
