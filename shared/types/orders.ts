@@ -7,6 +7,12 @@ export type PaymentMethod = (typeof PAYMENT_METHODS)[number]
 export const ORDER_STATUSES = ['new', 'processing', 'shipped', 'delivered', 'cancelled'] as const
 export type OrderStatus = (typeof ORDER_STATUSES)[number]
 
+/**
+ * Version (date) of the terms shown on /terms. Stored with each order the customer
+ * accepted it for; change it whenever the terms text changes.
+ */
+export const TERMS_VERSION = '2026-11-20'
+
 /** Order number format, e.g. "ES-261120-4F09A2". */
 export const ORDER_NUMBER_PATTERN = /^ES-\d{6}-[0-9A-F]{6}$/
 
@@ -28,6 +34,8 @@ export interface CheckoutRequest {
   items: { productId: string, size: string, quantity: number }[]
   /** Total (PLN) the customer saw; the order is rejected if the server's total differs. */
   expectedTotal: number
+  /** The customer ticked "I accept the terms" (must be true). */
+  acceptedTerms: boolean
   /** Honeypot field: real visitors never fill it in. */
   website?: string
 }
@@ -64,4 +72,6 @@ export interface StoredOrder {
   shipping: number
   total: number
   currency: 'PLN'
+  /** Which terms the customer accepted, and when. */
+  terms?: { version: string, acceptedAt: string }
 }

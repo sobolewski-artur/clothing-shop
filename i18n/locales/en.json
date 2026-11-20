@@ -164,7 +164,13 @@
       "phone": "Enter a valid phone number (at least 9 digits).",
       "street": "Enter your street and house number.",
       "postalCode": "Use the format 00-000.",
-      "city": "Enter your city."
+      "city": "Enter your city.",
+      "acceptedTerms": "Please accept the terms to continue."
+    },
+    "terms": {
+      "before": "I accept the",
+      "link": "terms and conditions",
+      "after": "and understand that this is a development app: the order will not be fulfilled and I should not pay for it."
     },
     "payment": "Payment",
     "methods": {
@@ -198,7 +204,18 @@
   },
   "footer": {
     "rights": "All rights reserved.",
-    "photos": "Photos: Unsplash"
+    "photos": "Photos: Unsplash",
+    "terms": "Terms and conditions",
+    "creator": "App created by {name}"
+  },
+  "terms": {
+    "title": "Terms and conditions",
+    "description": "Terms of use of the Clothing Store development app: orders are not fulfilled and no payments are taken.",
+    "version": "Version of {date}",
+    "notice": {
+      "title": "This is a development app, not a real shop.",
+      "text": "Orders placed here will not be fulfilled, nothing will be shipped and you should not pay for anything."
+    }
   },
   "home": {
     "title": "Home",

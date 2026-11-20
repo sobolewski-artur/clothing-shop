@@ -1,12 +1,13 @@
 import { randomBytes } from 'node:crypto'
 import { z } from 'zod'
-import { PAYMENT_METHODS, type CheckoutResponse, type StoredOrder, type StoredOrderItem } from '#shared/types/orders'
+import { PAYMENT_METHODS, TERMS_VERSION, type CheckoutResponse, type StoredOrder, type StoredOrderItem } from '#shared/types/orders'
 import { MAX_QUANTITY, shippingCentsFor, toCents } from '#shared/utils/pricing'
 
 const checkoutSchema = z.object({
   locale: z.enum(['pl', 'en']),
   website: z.string().max(0).optional(),
   expectedTotal: z.number().nonnegative(),
+  acceptedTerms: z.literal(true),
   customer: z.object({
     name: z.string().trim().min(2).max(100),
     email: z.string().trim().pipe(z.email().max(200)),
@@ -101,7 +102,8 @@ export default defineEventHandler(async (event): Promise<CheckoutResponse> => {
     subtotal: subtotalCents / 100,
     shipping: shippingCents / 100,
     total: totalCents / 100,
-    currency: 'PLN'
+    currency: 'PLN',
+    terms: { version: TERMS_VERSION, acceptedAt: createdAt }
   }
 
   // The order and its confirmation email are written together: both or neither.

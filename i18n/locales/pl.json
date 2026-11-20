@@ -164,7 +164,13 @@
       "phone": "Podaj poprawny numer telefonu (co najmniej 9 cyfr).",
       "street": "Podaj ulicę i numer domu.",
       "postalCode": "Użyj formatu 00-000.",
-      "city": "Podaj miejscowość."
+      "city": "Podaj miejscowość.",
+      "acceptedTerms": "Zaakceptuj regulamin, aby kontynuować."
+    },
+    "terms": {
+      "before": "Akceptuję",
+      "link": "regulamin",
+      "after": "i rozumiem, że to aplikacja deweloperska: zamówienie nie zostanie zrealizowane i nie należy za nie płacić."
     },
     "payment": "Płatność",
     "methods": {
@@ -198,7 +204,18 @@
   },
   "footer": {
     "rights": "Wszelkie prawa zastrzeżone.",
-    "photos": "Zdjęcia: Unsplash"
+    "photos": "Zdjęcia: Unsplash",
+    "terms": "Regulamin",
+    "creator": "Twórca aplikacji: {name}"
+  },
+  "terms": {
+    "title": "Regulamin",
+    "description": "Regulamin aplikacji deweloperskiej Clothing Store: zamówienia nie są realizowane, a płatności nie są pobierane.",
+    "version": "Wersja z dnia {date}",
+    "notice": {
+      "title": "To jest aplikacja deweloperska, a nie prawdziwy sklep.",
+      "text": "Złożone tu zamówienia nie zostaną zrealizowane, nic nie zostanie wysłane i nie należy za nic płacić."
+    }
   },
   "home": {
     "title": "Strona główna",

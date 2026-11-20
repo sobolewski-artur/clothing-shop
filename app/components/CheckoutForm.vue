@@ -31,6 +31,7 @@ const form = reactive<CheckoutCustomer>({
   payment: 'transfer'
 })
 const website = ref('') // honeypot, hidden from real visitors
+const acceptedTerms = ref(false)
 
 const fields: { name: Field, type: string, autocomplete: string, pattern?: string, half?: boolean }[] = [
   { name: 'name', type: 'text', autocomplete: 'name' },
@@ -60,6 +61,7 @@ async function submit() {
     customer: { ...form },
     items: cart.items.value.map(({ productId, size, quantity }) => ({ productId, size, quantity })),
     expectedTotal: totalCents.value / 100,
+    acceptedTerms: acceptedTerms.value,
     website: website.value
   }
 
@@ -218,9 +220,33 @@ async function submit() {
         <NuxtLink :to="localePath('/cart')" class="underline">{{ t('checkout.backToCart') }}</NuxtLink>
       </p>
 
+      <!-- Terms: this is a development app, orders are not fulfilled -->
+      <label
+        class="mt-6 flex gap-3 rounded-xl border p-3 text-sm"
+        :class="hasError('acceptedTerms') ? 'border-red-600 bg-red-50' : 'border-amber-300 bg-amber-50'"
+      >
+        <input
+          v-model="acceptedTerms"
+          type="checkbox"
+          name="acceptedTerms"
+          required
+          class="mt-0.5 shrink-0 accent-stone-900"
+          :aria-invalid="hasError('acceptedTerms')"
+          :aria-describedby="hasError('acceptedTerms') ? 'checkout-terms-error' : undefined"
+        >
+        <span>
+          {{ t('checkout.terms.before') }}
+          <NuxtLink :to="localePath('/terms')" target="_blank" class="font-medium underline">{{ t('checkout.terms.link') }}</NuxtLink>
+          {{ t('checkout.terms.after') }}
+        </span>
+      </label>
+      <p v-if="hasError('acceptedTerms')" id="checkout-terms-error" class="mt-1 text-sm text-red-700">
+        {{ t('checkout.fieldErrors.acceptedTerms') }}
+      </p>
+
       <button
         type="submit"
-        class="mt-6 w-full rounded-full bg-stone-900 px-6 py-3.5 text-sm font-semibold text-white hover:bg-stone-700 disabled:cursor-not-allowed disabled:opacity-50"
+        class="mt-4 w-full rounded-full bg-stone-900 px-6 py-3.5 text-sm font-semibold text-white hover:bg-stone-700 disabled:cursor-not-allowed disabled:opacity-50"
         :disabled="submitting || hasUnavailable"
       >
         {{ submitting ? t('checkout.submitting') : t('checkout.submit') }}

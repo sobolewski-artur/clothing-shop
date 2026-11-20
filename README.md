@@ -9,6 +9,7 @@ Live site: https://clothing-shop--clothing-storee.europe-west4.hosted.app
 - **Shop:** home and about pages, product listing with category filter and sorting, product pages with size picker.
 - **Cart:** kept in the visitor's browser, with free shipping from 200 zł (14.99 zł below that).
 - **Checkout:** bank transfer or cash on delivery. The server recalculates every price from Firestore before saving an order.
+- **Terms** at `/terms` (linked in the footer). They state this is a development app: orders are not fulfilled and no payments are taken. Customers must accept them at checkout, and the accepted version (`TERMS_VERSION` in [`shared/types/orders.ts`](shared/types/orders.ts)) is stored with each order.
 - **Emails:** order confirmation and status updates (processing, shipped, delivered, cancelled), sent by a Cloud Function over SMTP (Brevo).
 - **Admin panel** at `/admin` (not linked from the shop): view and sort orders, change their status, add, edit and delete products, upload product photos.
 
@@ -159,7 +160,7 @@ The site's address is set in `i18n.baseUrl` in `nuxt.config.ts` and used for SEO
 ## Not done yet
 
 - Bank account details for transfer payments (see Configuration).
-- Terms and conditions / privacy policy pages, and an acceptance checkbox at checkout.
+- Real terms and privacy policy. The current [`/terms`](app/pages/terms.vue) page only says this is a development app whose orders are not fulfilled.
 - Online card payments (e.g. Przelewy24 or Stripe). Only transfer and cash on delivery for now.
 - Rate limiting on `POST /api/orders` (only a honeypot field against bots).
 - The admin orders list loads the newest 500 orders; beyond that it would need server-side paging.
