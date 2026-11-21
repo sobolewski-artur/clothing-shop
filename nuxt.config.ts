@@ -15,7 +15,7 @@ export default defineNuxtConfig({
     public: {
       // Cloudflare Turnstile widget on the checkout form (the site key is public).
       turnstile: {
-        siteKey: '0x4AAAAAAGJNoZEB6IgK_puR'
+        siteKey: '0x4AAAAAAGLqcrYgEpchDghH'
       },
       // Shown to customers who pay by bank transfer. Set these before going live
       // (here or with NUXT_PUBLIC_SHOP_BANK_ACCOUNT / NUXT_PUBLIC_SHOP_BANK_RECIPIENT).
