@@ -4,7 +4,10 @@
   "nav": {
     "home": "Home",
     "products": "Shop",
-    "about": "About us"
+    "about": "About us",
+    "main": "Main navigation",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
   },
   "shop": {
     "title": "Shop",

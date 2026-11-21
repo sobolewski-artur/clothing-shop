@@ -29,8 +29,8 @@ const tabs: Tab[] = ['orders', 'products']
   <div v-else>
     <header class="flex flex-wrap items-center justify-between gap-4">
       <h1 class="text-3xl font-bold">{{ t('admin.title') }}</h1>
-      <div class="flex items-center gap-3 text-sm text-stone-600">
-        <span>{{ user.email }}</span>
+      <div class="flex min-w-0 items-center gap-3 text-sm text-stone-600">
+        <span class="min-w-0 break-all">{{ user.email }}</span>
         <button type="button" class="underline hover:text-stone-900" @click="session.signOut()">
           {{ t('admin.signOut') }}
         </button>

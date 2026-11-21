@@ -27,7 +27,8 @@ onMounted(async () => {
     'action': props.action,
     'language': locale.value,
     'theme': 'light',
-    'size': 'flexible',
+    // "flexible" is at least 300px wide; on very narrow phones use the 150px "compact" one.
+    'size': container.value.clientWidth < 300 ? 'compact' : 'flexible',
     'callback': (value: string) => { token.value = value },
     'expired-callback': () => { token.value = '' },
     'error-callback': () => { token.value = '' }

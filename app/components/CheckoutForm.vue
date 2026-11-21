@@ -129,7 +129,7 @@ async function submit() {
   <CartSkeleton v-else-if="loading && !isReady" />
 
   <form v-else class="mt-8 grid gap-10 lg:grid-cols-[1fr_22rem]" novalidate @submit.prevent="submit">
-    <div class="space-y-10">
+    <div class="min-w-0 space-y-10">
       <!-- Contact and delivery -->
       <fieldset>
         <legend class="text-lg font-semibold">{{ t('checkout.delivery') }}</legend>
@@ -199,7 +199,7 @@ async function submit() {
     </div>
 
     <!-- Order summary -->
-    <aside class="h-fit rounded-2xl bg-stone-50 p-6">
+    <aside class="h-fit min-w-0 rounded-2xl bg-stone-50 p-5 sm:p-6">
       <h2 class="text-lg font-semibold">{{ t('cart.summary') }}</h2>
       <ul class="mt-4 space-y-3">
         <li v-for="line in lines" :key="line.key" class="flex gap-3 text-sm">
