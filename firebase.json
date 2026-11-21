@@ -29,7 +29,7 @@
   ],
   "hosting": {
     "site": "clothing-storee",
-    "public": ".output/public",
+    "public": "dist",
     "cleanUrls": true,
     "rewrites": [
       {
