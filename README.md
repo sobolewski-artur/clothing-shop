@@ -12,6 +12,10 @@ Live site: https://clothing-storee.web.app
 - **Terms** at `/terms` (linked in the footer). They state this is a development app: orders are not fulfilled and no payments are taken. Customers must accept them at checkout, and the accepted version (`TERMS_VERSION` in [`shared/types/orders.ts`](shared/types/orders.ts)) is stored with each order.
 - **Emails:** order confirmation and status updates (processing, shipped, delivered, cancelled), sent by a Cloud Function over SMTP (Brevo).
 - **Admin panel** at `/admin` (not linked from the shop): view and sort orders, change their status, add, edit and delete products, upload product photos.
+- **Works on phones:** tested from 320px wide up to desktop, with no sideways scrolling.
+  - Below 768px the header shows the logo, a cart icon with the item count, and a burger menu with the page links and the language switch.
+  - Wider screens show the links inline.
+  - The admin orders table scrolls sideways inside its own box on small screens.
 
 ## Tech stack
 
@@ -73,7 +77,7 @@ Anything that runs on the server with admin rights (checkout, admin panel, scrip
 ```
 app/                  Nuxt app (runs in the browser and during server rendering)
   pages/              Routes: index, about, products/, cart, checkout/, admin/
-  components/         Shop components; admin/ holds the admin panel
+  components/         Shop components (SiteHeader: navigation and burger menu); admin/ holds the admin panel
   composables/        useCart, useCartLines, useProducts, useAdminSession, …
   plugins/            firebase.ts (Firebase client SDK), cart.client.ts (cart ↔ localStorage)
 server/
@@ -104,7 +108,7 @@ The exact fields are documented at the top of [`firestore.rules`](firestore.rule
 
 1. The cart lives in `localStorage` in the visitor's browser.
 2. Checkout sends the cart, the form and a Cloudflare Turnstile token to `POST /api/orders`.
-3. The server checks the Turnstile token with Cloudflare, so bots are rejected before any database work.
+3. The server checks the Turnstile token with Cloudflare, so bots are rejected before any database work. On screens narrower than 300px the widget uses Cloudflare's compact size.
 4. It then validates the input, loads current prices and sizes from Firestore, and rejects the order if a product is gone or the total differs from what the customer saw.
 5. The order and its confirmation email (a `mail/` document) are written in one batch, so one never exists without the other.
 
@@ -151,7 +155,13 @@ In [`nuxt.config.ts`](nuxt.config.ts) → `runtimeConfig.public`:
 
 Shipping cost, free-shipping threshold and maximum quantity are in [`shared/utils/pricing.ts`](shared/utils/pricing.ts).
 
-The site's address is set in `i18n.baseUrl` in `nuxt.config.ts` and used for SEO links (canonical, `hreflang`, `og:url`). Update it when moving to your own domain, and add that domain to Firebase Auth's authorized domains.
+**Turnstile hostnames:** the widget loads only on hostnames listed in Cloudflare dashboard → Turnstile → your widget → Hostnames. It needs `clothing-storee.web.app` (and `localhost` for development). On any other address, checkout can't get a token and refuses every order.
+
+**Moving to your own domain:**
+
+1. Update `i18n.baseUrl` in `nuxt.config.ts`. It's used for SEO links (canonical, `hreflang`, `og:url`).
+2. Add the domain to Firebase Auth's authorized domains.
+3. Add the domain to the Turnstile widget's hostnames.
 
 ## Deployment
 
@@ -161,6 +171,8 @@ The website runs on Firebase Hosting, site `clothing-storee`:
 - Every other request goes to the Cloud Function `shop` (codebase `nuxt`, `europe-west4`). It runs the Nuxt server: page rendering and `/api/*`.
 - Function settings (region, memory, max instances, secrets) are in `nitro.firebase` in `nuxt.config.ts`.
 - Firebase Hosting forwards only the cookie named `__session` to the function. That's why the language cookie uses that name.
+- `pnpm build:firebase` builds with Nitro's `firebase` preset. It then replaces the trimmed `node_modules` Nitro copies into `.output/server` with a clean `npm install`, because the Firebase CLI needs the complete `firebase-functions` package to read the function. The upload skips `node_modules`; Cloud Build installs the packages from `.output/server/package.json`.
+- `pnpm deploy` is a built-in pnpm command, which is why the script is called `deploy:web`.
 
 | What | How |
 |---|---|
