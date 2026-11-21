@@ -2,7 +2,7 @@
 
 Online clothing shop built with Nuxt 4 and Firebase. Polish by default, with an English version under `/en`.
 
-Live site: https://clothing-shop--clothing-storee.europe-west4.hosted.app
+Live site: https://clothing-storee.web.app
 
 ## Features
 
@@ -24,7 +24,7 @@ Live site: https://clothing-shop--clothing-storee.europe-west4.hosted.app
 | Sign-in (admin only) | Firebase Authentication (email/password or Google) |
 | Photos | Cloud Storage for Firebase |
 | Emails | Cloud Function `sendQueuedMail` + Nodemailer + Brevo SMTP |
-| Hosting | Firebase App Hosting, connected to this GitHub repository |
+| Hosting | Firebase Hosting (static files, CDN) + Cloud Function `shop` (Nuxt server, Nitro `firebase` preset) |
 | Validation | [Zod](https://zod.dev) on every server route |
 | Bot protection | [Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/) on the checkout form |
 
@@ -54,15 +54,17 @@ Anything that runs on the server with admin rights (checkout, admin panel, scrip
 
    Without the Turnstile secret, checkout refuses every order.
 
-`pnpm dev` loads `.env` automatically. On App Hosting no key is needed: credentials are provided automatically.
+`pnpm dev` loads `.env` automatically. In production no key is needed: the Cloud Function gets credentials automatically.
 
 ## Scripts
 
 | Command | What it does |
 |---|---|
 | `pnpm dev` | Development server with hot reload |
-| `pnpm build` | Production build into `.output/` |
-| `pnpm preview` | Run the production build locally |
+| `pnpm build` | Production build into `.output/` as a plain Node server |
+| `pnpm preview` | Run that build locally |
+| `pnpm build:firebase` | Production build for Firebase (Hosting files + Cloud Function) |
+| `pnpm deploy:web` | `build:firebase`, then deploy the website (Hosting + function `shop`) |
 | `pnpm seed:products [key.json]` | Add or refresh 10 sample products (defaults to `service-account.json`; safe to re-run) |
 | `pnpm admin:set <email>` | Give a user admin access (`--remove` takes it away) |
 
@@ -135,7 +137,7 @@ To make someone an admin:
 2. Run `pnpm admin:set <email>`.
 3. Sign in again. The script signs the user out everywhere so the change takes effect.
 
-Google sign-in only works on domains listed in Firebase console → Authentication → Settings → Authorized domains. Currently: the live site, `localhost` and the default Firebase domains.
+Google sign-in only works on domains listed in Firebase console → Authentication → Settings → Authorized domains. Currently: `localhost` and the default Firebase domains (including `clothing-storee.web.app`).
 
 ## Configuration
 
@@ -153,16 +155,23 @@ The site's address is set in `i18n.baseUrl` in `nuxt.config.ts` and used for SEO
 
 ## Deployment
 
+The website runs on Firebase Hosting, site `clothing-storee`:
+
+- Hosting serves the built files in `.output/public` from its CDN.
+- Every other request goes to the Cloud Function `shop` (codebase `nuxt`, `europe-west4`). It runs the Nuxt server: page rendering and `/api/*`.
+- Function settings (region, memory, max instances, secrets) are in `nitro.firebase` in `nuxt.config.ts`.
+- Firebase Hosting forwards only the cookie named `__session` to the function. That's why the language cookie uses that name.
+
 | What | How |
 |---|---|
-| Website | Push to `main`. App Hosting (backend `clothing-shop`) builds and deploys automatically. |
+| Website | `pnpm deploy:web`. Pushing to GitHub does not deploy. |
 | Email function | `pnpm dlx firebase-tools@latest deploy --only functions:mail` |
 | Firestore rules and indexes | `pnpm dlx firebase-tools@latest deploy --only firestore` |
 | Storage rules | `pnpm dlx firebase-tools@latest deploy --only storage` |
 | Change the SMTP password | `pnpm dlx firebase-tools@latest functions:secrets:set SMTP_PASSWORD`, then redeploy the email function |
-| Turnstile secret on App Hosting | `pnpm dlx firebase-tools@latest apphosting:secrets:set turnstile-secret-key`, then `apphosting:secrets:grantaccess turnstile-secret-key --backend clothing-shop`. [`apphosting.yaml`](apphosting.yaml) passes it to the app as `NUXT_TURNSTILE_SECRET_KEY`. |
+| Change the Turnstile secret | `pnpm dlx firebase-tools@latest functions:secrets:set NUXT_TURNSTILE_SECRET_KEY`, then `pnpm deploy:web` |
 
-`firebase.json` has no `apphosting` section on purpose: the backend deploys from GitHub. A plain `firebase deploy` therefore leaves the website alone.
+A plain `firebase deploy --only functions` deploys both codebases (`mail` and `nuxt`). Run `pnpm build:firebase` first, or the `nuxt` codebase is deployed from an old or missing build.
 
 ## Not done yet
 

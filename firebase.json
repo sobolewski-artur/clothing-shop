@@ -16,8 +16,42 @@
         "firebase-debug.log",
         "firebase-debug.*.log"
       ]
+    },
+    {
+      "source": ".output/server",
+      "codebase": "nuxt",
+      "ignore": [
+        "node_modules",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
+      ]
     }
   ],
+  "hosting": {
+    "site": "clothing-storee",
+    "public": ".output/public",
+    "cleanUrls": true,
+    "rewrites": [
+      {
+        "source": "**",
+        "function": {
+          "functionId": "shop",
+          "region": "europe-west4"
+        }
+      }
+    ],
+    "headers": [
+      {
+        "source": "/_nuxt/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000, immutable"
+          }
+        ]
+      }
+    ]
+  },
   "storage": {
     "rules": "storage.rules"
   },

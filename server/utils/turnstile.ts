@@ -12,8 +12,8 @@ interface SiteverifyResponse {
  * Throws 400 { code: 'captcha' } if it isn't valid. Tokens are single-use and
  * expire after 5 minutes, so the browser must get a new one after each attempt.
  *
- * The secret key comes from NUXT_TURNSTILE_SECRET_KEY (.env locally, an App
- * Hosting secret in production). Without it every check fails: the protection
+ * The secret key comes from NUXT_TURNSTILE_SECRET_KEY (.env locally, a Secret
+ * Manager secret of the same name on the Cloud Function in production). Without it every check fails: the protection
  * is never silently switched off.
  */
 export async function verifyTurnstile(event: H3Event, token: string, expectedAction: string) {

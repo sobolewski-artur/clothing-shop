@@ -7,8 +7,8 @@ export default defineNuxtConfig({
   modules: ['@nuxtjs/i18n'],
   css: ['~/assets/css/main.css'],
   runtimeConfig: {
-    // Server-only. Set with NUXT_TURNSTILE_SECRET_KEY (.env locally; App Hosting
-    // secret "turnstile-secret-key" in production, see apphosting.yaml). Never commit it.
+    // Server-only. Set with NUXT_TURNSTILE_SECRET_KEY (.env locally; in production the
+    // Secret Manager secret of the same name, see nitro.firebase below). Never commit it.
     turnstile: {
       secretKey: ''
     },
@@ -37,9 +37,27 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()]
   },
+  // Production runs on Firebase Hosting + a Cloud Function: `pnpm build:firebase`
+  // (Nitro's "firebase" preset) bundles the Nuxt server into .output/server as the
+  // function "shop", and Hosting serves .output/public. See firebase.json.
+  // These options are ignored by the plain `pnpm build` (node server).
+  nitro: {
+    firebase: {
+      gen: 2,
+      nodeVersion: '22',
+      serverFunctionName: 'shop',
+      httpsOptions: {
+        region: 'europe-west4',
+        memory: '512MiB',
+        maxInstances: 3,
+        // Secret Manager secret exposed as an env var (overrides runtimeConfig.turnstile.secretKey).
+        secrets: ['NUXT_TURNSTILE_SECRET_KEY']
+      }
+    }
+  },
   i18n: {
     // Used for absolute SEO links (canonical, hreflang, og:url). No trailing slash.
-    baseUrl: 'https://clothing-shop--clothing-storee.europe-west4.hosted.app',
+    baseUrl: 'https://clothing-storee.web.app',
     defaultLocale: 'pl',
     strategy: 'prefix_except_default',
     locales: [
@@ -48,7 +66,9 @@ export default defineNuxtConfig({
     ],
     detectBrowserLanguage: {
       useCookie: true,
-      cookieKey: 'i18n_redirected',
+      // Firebase Hosting strips every cookie except "__session" before calling the
+      // function, so the language choice must use that name to reach the server.
+      cookieKey: '__session',
       redirectOn: 'root'
     }
   }

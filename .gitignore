@@ -8,6 +8,9 @@ dist
 .claude
 .agents
 
+# Firebase CLI deploy cache
+.firebase
+
 # Node dependencies
 node_modules
 
